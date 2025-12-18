@@ -10,7 +10,6 @@ public final class Simulator {
     private final Shoe shoe;
     private final Strategy strategy;
 
-    // Simple reshuffle threshold to avoid running out mid-round.
     private final int reshuffleWhenBelow;
 
     public Simulator(GameEngine engine, Shoe shoe, Strategy strategy) {
