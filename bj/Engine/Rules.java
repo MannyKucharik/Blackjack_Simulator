@@ -8,7 +8,6 @@ public final class Rules {
     private final double betUnit;
 
     /**
-     * Creates a Rules object with common defaults:
      * - 6 decks
      * - dealer stands on soft 17 (S17)
      * - blackjack pays 3:2 (1.5)
