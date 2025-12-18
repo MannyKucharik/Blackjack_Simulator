@@ -23,7 +23,6 @@ public final class GameEngine {
         Hand playerHand = new Hand();
         Hand dealerHand = new Hand();
 
-        // ---- Initial deal: player, dealer(up), player, dealer(hole) ----
         playerHand.add(shoe.deal());
         dealerHand.add(shoe.deal());
         playerHand.add(shoe.deal());
@@ -31,7 +30,6 @@ public final class GameEngine {
 
         Card dealerUpCard = dealerHand.cards().get(0);
 
-        // ---- Natural blackjack checks ----
         boolean playerBJ = playerHand.isBlackjack();
         boolean dealerBJ = dealerHand.isBlackjack();
 
@@ -45,7 +43,7 @@ public final class GameEngine {
             } else if (playerBJ) {
                 outcome = Outcome.WIN;
                 netUnits = rules.betUnit() * rules.blackjackPayout();
-            } else { // dealerBJ
+            } else {
                 outcome = Outcome.LOSS;
                 netUnits = -rules.betUnit();
             }
@@ -62,7 +60,6 @@ public final class GameEngine {
             );
         }
 
-        // ---- Player turn (strategy loop) ----
         while (true) {
             if (playerHand.isBusted()) {
                 return new RoundResult(
@@ -84,11 +81,9 @@ public final class GameEngine {
                 break;
             }
 
-            // HIT
             playerHand.add(shoe.deal());
         }
-
-        // ---- Dealer turn (rule-based) ----
+        
         while (shouldDealerHit(dealerHand)) {
             dealerHand.add(shoe.deal());
 
@@ -106,7 +101,6 @@ public final class GameEngine {
             }
         }
 
-        // ---- Compare totals and settle ----
         int playerTotal = playerHand.bestTotal();
         int dealerTotal = dealerHand.bestTotal();
 
@@ -135,16 +129,13 @@ public final class GameEngine {
                 false
         );
     }
-
-    // Dealer hits until reaching 17+.
-    // If dealerHitsSoft17 == true, dealer hits on soft 17.
+    
     private boolean shouldDealerHit(Hand dealerHand) {
         int total = dealerHand.bestTotal();
 
         if (total < 17) return true;
         if (total > 17) return false;
 
-        // total == 17
         return rules.dealerHitsSoft17() && dealerHand.isSoft();
     }
 }
